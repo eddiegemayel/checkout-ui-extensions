@@ -1,6 +1,7 @@
 // @ts-check
 
 // TESTDISCOUNT is the code
+// 00bb0f81-2bd3-4fdd-8950-cfd10f8a872a
 import { DiscountApplicationStrategy } from "../generated/api";
 
 const EMPTY_DISCOUNT = {
@@ -37,3 +38,21 @@ export function run(input) {
 
   return targets.length === 0 ? EMPTY_DISCOUNT : DISCOUNTED_ITEMS;
 }
+
+
+// mutation {
+//   discountCodeAppCreate(codeAppDiscount: {
+//     code: "TESTDISCOUNT",
+//     title: "Tag discount",
+//     functionId: "00bb0f81-2bd3-4fdd-8950-cfd10f8a872a",
+//     startsAt: "2024-01-30T00:00:00"
+//   }) {
+//     codeAppDiscount {
+//       discountId
+//     }
+//     userErrors {
+//       field
+//       message
+//     }
+//   }
+// }
