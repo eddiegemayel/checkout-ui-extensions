@@ -1,5 +1,6 @@
 // @ts-check
-// import type { RunInput, FunctionRunResult } from "../generated/api";
+
+// TESTDISCOUNT is the code
 import { DiscountApplicationStrategy } from "../generated/api";
 
 const EMPTY_DISCOUNT = {
@@ -34,5 +35,5 @@ export function run(input) {
     }]
   }
 
-  return DISCOUNTED_ITEMS;
+  return targets.length === 0 ? EMPTY_DISCOUNT : DISCOUNTED_ITEMS;
 }
