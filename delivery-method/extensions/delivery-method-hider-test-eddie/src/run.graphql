@@ -1,0 +1,21 @@
+query InputQuery {
+  cart {
+    lines {
+      merchandise {
+        ... on ProductVariant {
+          product {
+            id
+            oversized: hasAnyTag(tags: ["oversized"])
+          }
+        }
+      }
+    }
+    deliveryGroups {
+      id
+      deliveryOptions {
+        handle
+        title
+      }
+    }
+  }
+}
