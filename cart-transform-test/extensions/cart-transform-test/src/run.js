@@ -3,8 +3,8 @@
 /**
  * @typedef {import("../generated/api").RunInput} RunInput
  * @typedef {import("../generated/api").FunctionRunResult} FunctionRunResult
+ * @typedef {import("../generated/api").CartOperation} CartOperation
  */
-
 
 //42334054285364
 /**
@@ -15,6 +15,7 @@
  * @param {RunInput} input
  * @returns {FunctionRunResult}
  */
+
 // Assuming the necessary imports are done in the JavaScript environment as they were in TypeScript
 export function run(input) {
   const groupedItems = [];
@@ -27,22 +28,23 @@ export function run(input) {
       groupedItems[bundleId.value].push(line);
     }
   });
+
   return {
     operations: [
       ...Object.values(groupedItems.map(group => {
         const mergeOperation = {
           merge: {
-            cartLines: group.map(line => {
+            cartLines: group.map((line) => {
               return {
                 cartLineId: line.id,
                 quantity: line.quantity
               }
             }),
-            parentVariantId: "gid://shopify/ProductVariant/42334054285364"
-          }
+            parentVariantId: "gid://shopify/ProductVariant/42334054285364",
+          },
         };
         return mergeOperation;
-      }))
-    ]
+      })),
+    ],
   };
 };
