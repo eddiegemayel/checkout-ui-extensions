@@ -3,10 +3,8 @@ query RunInput {
     lines {
       id
       quantity
-      cost {
-        subtotalAmount {
-          amount
-        }
+      bundleId: attribute(key: "_bundleId") {
+        value
       }
     }
   }
