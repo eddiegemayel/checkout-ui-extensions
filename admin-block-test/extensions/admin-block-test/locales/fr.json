@@ -1,0 +1,4 @@
+{
+  "name": "admin-block-test",
+  "welcome": "Bienvenue dans l'extension {{TARGET}}!"
+}
