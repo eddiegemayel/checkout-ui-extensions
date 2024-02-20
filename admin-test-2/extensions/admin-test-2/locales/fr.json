@@ -1,0 +1,4 @@
+{
+  "name": "admin-test-2",
+  "welcome": "Bienvenue dans l'extension {{TARGET}}!"
+}
