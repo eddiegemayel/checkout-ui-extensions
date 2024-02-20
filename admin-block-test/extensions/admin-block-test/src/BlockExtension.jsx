@@ -4,7 +4,15 @@ import {
   AdminBlock,
   BlockStack,
   Text,
+  Heading,
+  Divider,
+  InlineStack,
+  Image,
+  Box,
+  Icon,
+  ProgressIndicator,
 } from '@shopify/ui-extensions-react/admin';
+import { Link } from '@shopify/ui-extensions/admin';
 
 import { useState, useEffect } from 'react';
 
@@ -32,6 +40,7 @@ function App() {
               title
               image {
                 url
+                altText
               }
             }
           }
@@ -54,11 +63,53 @@ function App() {
 
   console.log(collections);
 
+  if(collections === null) return (
+    <InlineStack inlineAlignment="center">
+      <ProgressIndicator size="base" />
+    </InlineStack>
+  );
+
+  if (collections.length == 0) {
+    return (
+      <InlineStack inlineAlignment="center">
+        <Heading size={3}>This product is not part of any collection.</Heading>
+      </InlineStack>
+    )
+  }
+  const IMAGE_SIZE = 32;
+
   return (
     // The AdminBlock component provides an API for setting the title of the Block extension wrapper.
     <AdminBlock title="Collections Listener">
-      <BlockStack>
-        <Text fontWeight="bold">Hello world</Text>
+      <BlockStack gap="base">
+        <Heading size={2}>
+          Collections:
+        </Heading>
+        <BlockStack gap="large">
+          {collections.map((collection, index) => {
+            return (
+              <>
+                <Divider/>
+                <InlineStack inlineAlignment="space-between">
+                  <InlineStack gap="base">
+                    {collection.image?.url ? (
+                      <Box inlineSize={IMAGE_SIZE} blockSize={IMAGE_SIZE}>
+                        <Image source={collection.image.url} alt={collection.image.altText} />
+                      </Box>
+                    ) : 
+                      <Box inlineSize={IMAGE_SIZE} blockSize={IMAGE_SIZE}>
+                        <Icon name="ImageMajor"/>
+                      </Box>}
+                    <Text>{ collection.title }</Text>
+                  </InlineStack>
+                  <InlineStack>
+                    <Link to={`shopify:admin/collections/${collection.id.split("/").at(-1)}`}>View Collection</Link>
+                  </InlineStack>
+                </InlineStack>
+              </>
+            )
+          })}
+        </BlockStack>
       </BlockStack>
     </AdminBlock>
   );
