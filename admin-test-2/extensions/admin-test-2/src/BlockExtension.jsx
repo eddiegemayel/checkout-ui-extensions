@@ -4,6 +4,10 @@ import {
   AdminBlock,
   BlockStack,
   Text,
+  Heading,
+  Box,
+  Image,
+  InlineStack,
 } from '@shopify/ui-extensions-react/admin';
 
 import { useEffect, useState } from 'react'
@@ -41,14 +45,17 @@ function App() {
       }`);
 
       if(!result.errors && result.data) {
-        //const customerInfo = result.data.customers.edges.filter((edge) => edge.node.id == currentCustomerId).map((edge => edge.node));
-
-        //result.data.customers.edges.map((edge) => {console.log(edge.node.id, currentCustomerId);});
-
-        setCustomer(result);
+        setCustomer(result.data.customer);
+        setError(false);
       }
       else {
-        setCustomer(result.errors);
+        if(result.errors[0]) {
+          setCustomer(result.errors[0]);
+        }
+        else {
+          setCustomer(result.errors);
+        }
+        
         setError(true);
       }
     }
@@ -56,13 +63,48 @@ function App() {
     fetchData();
   }, []);
 
-  console.log("customer data", customer);
+  if(customer) {
+    console.log("customer data", customer);
+  }
+
+  const imageSize = 32;
+
+  if(error == true) {
+    return (
+      // The AdminBlock component provides an API for setting the title of the Block extension wrapper.
+      <AdminBlock title="Admin Test 2">
+        <BlockStack>
+          {error == true &&
+            <>
+              <Text appearance="critical">An error has occured:</Text>
+              <Text appearance="critical">{customer.message}</Text>
+            </>
+          }
+        </BlockStack>
+      </AdminBlock>
+    )
+  }
 
   return (
     // The AdminBlock component provides an API for setting the title of the Block extension wrapper.
-    <AdminBlock title="Admin Test 2">
+    <AdminBlock title="Additional Customer Info">
       <BlockStack>
-       Test
+        {error == false && customer &&
+          <InlineStack inlineAlignment="base">
+            <Box inlineSize={imageSize} blockSize={imageSize}>
+              <Image source={customer.image.src} />
+            </Box>
+
+            <InlineStack inlineAlignment="base">
+              <InlineStack inlineAlignment="base">
+                <Text emphasis>Valid Email:</Text> <Text>{customer.validEmailAddress == true && "True"}{customer.validEmailAddress == false && "False"}</Text>
+              </InlineStack>
+              <InlineStack inlineAlignment="base">
+                <Text emphasis>Verified Email:</Text> <Text>{customer.verifiedEmail == true && "True"}{customer.verifiedEmail == false && "False"}</Text>
+              </InlineStack>
+            </InlineStack>
+          </InlineStack>
+        }
       </BlockStack>
     </AdminBlock>
   );
