@@ -157,9 +157,9 @@ Check the top-level render call using <`+Y+">.")}return O}}function cn(v,O){{if(
             }
           }
         }
-      }`);!L.errors&&L.data.order?(L.data.order&&L.data.order.lineItems.edges.map(P=>{let pe=P.node.product.id;function $e(){return ul(this,null,function*(){let qe=yield c(`query {
-                product(id: "${pe}") {
-                  title
-                  tags
-                }
-              }`);G(we=>[...we,qe.data.product])})}$e()}),g(L.data.order),H(!1)):(L.errors[0]?g(L.errors[0]):g(L.errors),H(!0))})}h()},[]),(0,sn.jsx)(Wd,{title:"Additional Order Details",children:(0,sn.jsxs)(hs,{children:[B==!0&&(0,sn.jsxs)(sn.Fragment,{children:[(0,sn.jsx)(Xi,{appearance:"warning",children:"Error Recieved:"}),(0,sn.jsxs)(Xi,{appearance:"warning",children:['"',B==!0&&T.message,'"']})]}),B==!1&&(0,sn.jsxs)(sn.Fragment,{children:[(0,sn.jsx)($d,{size:4,children:"Product Tags"}),M.map(h=>(0,sn.jsxs)(hs,{gap:"small base",padding:"base base large",children:[(0,sn.jsx)(Xi,{children:h.title}),(0,sn.jsx)(Id,{}),h.tags.map(L=>(0,sn.jsx)(Xi,{children:L}))]}))]})]})})}})();
+      }`);!L.errors&&L.data.order?(L.data.order.lineItems.edges.map(P=>{let pe=P.node.product.id;function $e(){return ul(this,null,function*(){let qe=yield c(`query {
+              product(id: "${pe}") {
+                title
+                tags
+              }
+            }`);G(we=>[...we,qe.data.product])})}$e()}),g(L.data.order),H(!1)):(L.errors[0]?g(L.errors[0]):g(L.errors),H(!0))})}h()},[]),(0,sn.jsx)(Wd,{title:"Additional Order Details",children:(0,sn.jsxs)(hs,{children:[B==!0&&(0,sn.jsxs)(sn.Fragment,{children:[(0,sn.jsx)(Xi,{appearance:"warning",children:"Error Recieved:"}),(0,sn.jsxs)(Xi,{appearance:"warning",children:['"',B==!0&&T.message,'"']})]}),B==!1&&(0,sn.jsxs)(sn.Fragment,{children:[(0,sn.jsx)($d,{size:4,children:"Product Tags"}),M.map(h=>(0,sn.jsxs)(hs,{gap:"small base",padding:"base base large",children:[(0,sn.jsx)(Xi,{children:h.title}),(0,sn.jsx)(Id,{}),h.tags.map(L=>(0,sn.jsx)(Xi,{children:L}))]}))]})]})})}})();

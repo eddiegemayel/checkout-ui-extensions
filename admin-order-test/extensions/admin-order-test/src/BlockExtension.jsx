@@ -26,7 +26,10 @@ function App() {
   const [lineItem, setLineItem] = useState([]);
   const [error, setError] = useState(false);
 
+  //On first load useEffect
   useEffect(() => {
+    //Fetch data on this order
+    //Looking for product id's present in this order
     async function fetchData() {
       const result = await query(`query {
         order(id: "${ currentOrder }") {
@@ -43,30 +46,33 @@ function App() {
       }`);
 
       if(!result.errors && result.data.order) {
-        if(result.data.order) {
-          result.data.order.lineItems.edges.map((lineItem) => {
-            let productId = lineItem.node.product.id;
+        //Loop through products in thisorder
+        result.data.order.lineItems.edges.map((lineItem) => {
+          //Grab their ids
+          let productId = lineItem.node.product.id;
 
-            async function fetchProdData() {
-              const productResult = await query(`query {
-                product(id: "${ productId }") {
-                  title
-                  tags
-                }
-              }`);
+          //Once we have those - fetch data per product
+          //Grab each products title and tags
+          async function fetchProdData() {
+            const productResult = await query(`query {
+              product(id: "${ productId }") {
+                title
+                tags
+              }
+            }`);
 
-              //console.log("product query", productResult.data.product);
-              setLineItem(lineItem => [...lineItem, productResult.data.product]);
-            }
+            //Set state array
+            setLineItem(lineItem => [...lineItem, productResult.data.product]);
+          }
 
-            fetchProdData();
-          });
-        }
+          fetchProdData();
+        });
 
         setOrderInfo(result.data.order);
         setError(false);
       }
       else {
+        //Set error states
         if(result.errors[0]) {
           setOrderInfo(result.errors[0]);
         }
