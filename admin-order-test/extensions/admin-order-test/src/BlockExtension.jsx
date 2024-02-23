@@ -22,9 +22,9 @@ function App() {
   const currentOrder = data.selected[0].id;
 
   //States
-  const [orderInfo, setOrderInfo] = useState(null);
-  const [lineItem, setLineItem] = useState([]);
+  const [errorInfo, setErrorInfo] = useState(null);
   const [error, setError] = useState(false);
+  const [lineItem, setLineItem] = useState([]);
 
   //On first load useEffect
   useEffect(() => {
@@ -58,26 +58,50 @@ function App() {
               product(id: "${ productId }") {
                 title
                 tags
+                metafields(first: 10) {
+                  edges {
+                    node {
+                      namespace
+                      key
+                      value
+                      definition {
+                        id
+                      }
+                    }
+                  }
+                }
               }
             }`);
 
-            //Set state array
-            setLineItem(lineItem => [...lineItem, productResult.data.product]);
+            if(!productResult.errors && productResult.data) {
+              //Set lineItem state array
+              setLineItem(lineItem => [...lineItem, productResult.data.product]);
+            }
+            else {
+              //Set error state(s) if they exist
+              if(productResult.errors[0]) {
+                setErrorInfo(productResult.errors[0]);
+              }
+              else {
+                setErrorInfo(productResult.errors);
+              }
+              setError(true);
+            }
           }
 
           fetchProdData();
         });
 
-        setOrderInfo(result.data.order);
+        setErrorInfo(result.data.order);
         setError(false);
       }
       else {
-        //Set error states
+        //Set error state(s) if they exist
         if(result.errors[0]) {
-          setOrderInfo(result.errors[0]);
+          setErrorInfo(result.errors[0]);
         }
         else {
-          setOrderInfo(result.errors);
+          setErrorInfo(result.errors);
         }
         setError(true);
       }
@@ -93,25 +117,39 @@ function App() {
         {error == true &&
           <>
             <Text appearance="warning">Error Recieved:</Text>
-            <Text appearance="warning">"{error == true && orderInfo.message}"</Text>
+            <Text appearance="warning">"{error == true && errorInfo.message}"</Text>
           </>
         }
         
         {error == false &&
           <>
-            <Heading size={4}>Product Tags</Heading>
+            <Heading size={3}>Product Metafields in this Order:</Heading>
             {lineItem.map((product) => {
-              // const tagPresent = product.tags.filter((tag) => tag == "Winter");
+              // const tagPresent = product.tags.filter((tag) => tag == "Winter");s
+
+              if(product.metafields.edges.length > 0) {
+                product.metafields.edges.map((metafield) => {
+                  console.log("testtt", metafield.node);
+                });
+              }
 
               return (
                 <BlockStack gap="small base" padding="base base large">
-                  <Text>{product.title}</Text>
+                  <Heading size={4}>{product.title}</Heading>
                   <Divider/>
-                    {product.tags.map((tag) => {
-                      return (
-                        <Text>{tag}</Text>
-                      )
-                    })}
+                    {product.metafields.edges.length > 0 &&
+                      <>
+                        {product.metafields.edges.map((metafield) => {
+                          return (
+                            <Text>metafields.{metafield.node.namespace}.{metafield.node.key} = {metafield.node.value}</Text>
+                          )
+                        })}
+                      </>
+                    }
+                    
+                    {product.metafields.edges.length == 0 &&
+                      <Text>No metafields present.</Text>
+                    }
                 </BlockStack>
               )
             })}
