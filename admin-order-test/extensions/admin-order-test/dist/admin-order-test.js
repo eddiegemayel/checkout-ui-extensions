@@ -19561,7 +19561,7 @@
           lineItem.map((product) => {
             if (product.metafields.edges.length > 0) {
               product.metafields.edges.map((metafield) => {
-                console.log("testtt", metafield.node);
+                console.log("Test here", metafield.node);
               });
             }
             return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(BlockStack2, { gap: "small base", padding: "base base large", children: [

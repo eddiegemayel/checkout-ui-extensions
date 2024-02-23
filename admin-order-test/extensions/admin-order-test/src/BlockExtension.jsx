@@ -129,7 +129,7 @@ function App() {
 
               if(product.metafields.edges.length > 0) {
                 product.metafields.edges.map((metafield) => {
-                  console.log("testtt", metafield.node);
+                  console.log("Test here", metafield.node);
                 });
               }
 
