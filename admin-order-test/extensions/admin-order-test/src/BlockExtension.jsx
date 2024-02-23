@@ -125,7 +125,7 @@ function App() {
           <>
             <Heading size={3}>Product Metafields in this Order:</Heading>
             {lineItem.map((product) => {
-              // const tagPresent = product.tags.filter((tag) => tag == "Winter");s
+              // const tagPresent = product.tags.filter((tag) => tag == "Winter");
 
               if(product.metafields.edges.length > 0) {
                 product.metafields.edges.map((metafield) => {
