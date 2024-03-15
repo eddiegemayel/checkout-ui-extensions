@@ -19,7 +19,7 @@
 // Assuming the necessary imports are done in the JavaScript environment as they were in TypeScript
 export function run(input) {
   const groupedItems = [];
-  input.cart.lines.forEach(line => {
+  input.cart.lines.forEach((line) => {
     const bundleId = line.bundleId;
     if(bundleId && bundleId.value) {
       if(!groupedItems[bundleId.value]) {
@@ -31,19 +31,19 @@ export function run(input) {
 
   return {
     operations: [
-      ...Object.values(groupedItems.map(group => {
-        const mergeOperation = {
+      ...Object.values(groupedItems.map((group) => {
+        const CartOperation = {
           merge: {
             cartLines: group.map((line) => {
               return {
                 cartLineId: line.id,
-                quantity: line.quantity
-              }
+                quantity: line.quantity,
+              };
             }),
             parentVariantId: "gid://shopify/ProductVariant/42334054285364",
           },
         };
-        return mergeOperation;
+        return CartOperation;
       })),
     ],
   };
