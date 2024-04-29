@@ -1,4 +1,23 @@
-# This file stores configurations for your Shopify app.
-# It must exist at the root of your app.
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
+client_id = "a3fdd852c2b82eab916ab6f558f5bac3"
+name = "tiered-dscnt-tutorial"
+handle = "tiered-dscnt-tutorial"
+application_url = "https://shopify.dev/apps/default-app-home"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 scopes = ""
+
+[auth]
+redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]
+
+[webhooks]
+api_version = "2024-04"
+
+[pos]
+embedded = false
