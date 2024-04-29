@@ -1,6 +1,7 @@
 import type {
   RunInput,
-  FunctionRunResult
+  FunctionRunResult,
+  ProductVariant
 } from "../generated/api";
 import {
   DiscountApplicationStrategy,
@@ -11,11 +12,45 @@ const EMPTY_DISCOUNT: FunctionRunResult = {
   discounts: [],
 };
 
-type Configuration = {};
+const MIN_UNIQUE_PRODUCTS = 2;
+const DISCOUNT_PER_PRODUCT = 5;
+const MAX_DISCOUNT = 20;
 
 export function run(input: RunInput): FunctionRunResult {
-  const configuration: Configuration = JSON.parse(
-    input?.discountNode?.metafield?.value ?? "{}"
-  );
+  const uniqueProducts = input.cart.lines.reduce((productIds, line) => {
+    productIds.add((line.merchandise as ProductVariant).product.id);
+
+    return productIds;
+  }, new Set<string>());
+
+  if(uniqueProducts.size < MIN_UNIQUE_PRODUCTS) {
+    return EMPTY_DISCOUNT;
+  }
+  else {
+    const discount = Math.min(uniqueProducts.size * DISCOUNT_PER_PRODUCT, MAX_DISCOUNT);
+    const uniqueDiscountedProducts = discount / DISCOUNT_PER_PRODUCT;
+
+    return {
+      discountApplicationStrategy: DiscountApplicationStrategy.First,
+      discounts: [
+        {
+          message: `${discount}% off for buying unique products.`,
+          value: {
+            percentage: {
+              value: discount
+            }
+          },
+          targets: [
+            {
+              orderSubtotal: {
+                excludedVariantIds: []
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+
   return EMPTY_DISCOUNT;
 };
