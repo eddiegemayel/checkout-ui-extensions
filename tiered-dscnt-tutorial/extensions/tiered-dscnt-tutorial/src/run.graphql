@@ -1,7 +1,15 @@
 query RunInput {
-  discountNode {
-    metafield(namespace: "$app:tiered-dscnt-tutorial", key: "function-configuration") {
-      value
+  cart {
+    lines {
+      id
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          product {
+            id
+          }
+        }
+      }
     }
   }
 }
